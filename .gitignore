@@ -82,7 +82,8 @@ venv.bak/
 
 
 # CUSTOM
-
+data/*
+!data/.gitkeep
 
 figures/*
 !figures/.gitkeep
