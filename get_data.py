@@ -6,6 +6,7 @@ def get_data():
         {'name': 'C', 'length': 250, 'n_segments': 25}
     ]
 
+# replace this when ready
 def get_real_data(segment_length=10):
     data = []
     tm = [str, int, float, float]
