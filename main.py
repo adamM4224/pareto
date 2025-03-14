@@ -1,28 +1,39 @@
 import numpy as np
+import sys
 from pareto.Pareto import Pareto
 from pareto.grid import get_grid
-from pareto.plot_pareto import plot_pareto
+from pareto.plot_pareto import plot_pareto, plot_tree
 import json
 from get_data import get_data
 
 
-def get_experiment_settings():
+def get_experiment_settings(json_settings_file="./settings/defaults.json"):
     """"
-    Global settings for experiment
+    Global settings for experiment. It is actually just returning 
+    what is in the json file. Removing grid transform function from 
+    here so the settings can be json. Update the grid on the pareto.set_grid()
+
+
+    Parameters: 
+        json_settings_file: {unit_length: float, radius: float}
+        * see settings/default.json for example
+
     Returns
-        unit_length: float - the unit length of a grid cell
-        radius: float - radius to look around point (xi, yi) for nutrients
+
         transform_func: function - to transform the default grid (uniform nutrients)
             params: grid
             returns: grid (see src/grid.py for what makes a valid grid)
     """
+    s = None
+    with open(json_settings_file) as f:
+        s =  json.load(f)
     return {
-        'unit_length': 1,
-        'radius': 10, 
-        'transorm_func': lambda x: x
+        'unit_length': s['unit_length'],
+        'radius': s['radius'],
+        'key': s['key'] if 'key' in s else ''
     }
 
-def build_pareto(data_instance):
+def build_pareto(data_instance, settings):
     """
     Build the pareto curve. Computes coverage, transport objectives over a
     range of beta values.
@@ -42,7 +53,7 @@ def build_pareto(data_instance):
     length = di['length']
     n_segments = di['n_segments']
     segment_length = length / n_segments 
-    settings = get_experiment_settings()
+    # settings = get_experiment_settings()
 
     optimal_structures = []
 
@@ -61,6 +72,9 @@ def build_pareto(data_instance):
             unit_length=settings["unit_length"]
         )
 
+        # update grid here
+        # pareto.set_grid(grid)
+
         tree, grid, value = pareto.build()
         optimal_structures.append({
             'beta': beta, 
@@ -73,11 +87,27 @@ def build_pareto(data_instance):
 
 
 def main():
+    settings_file = sys.argv[1] if len(sys.argv) > 1 else None 
+    settings_file = settings_file or './settings/default.json' 
+    settings = get_experiment_settings(settings_file)
 
     data = get_data()
     for i, di in enumerate(data):
-        values = build_pareto(di)
-        plot_pareto(f'test1{i}', values)
+        # update the name to include the experimental details
+        name = di['name']
+        name = f"{name}-{settings['key']}"
+        print(f'running: {name}')
+        di['name'] = name
+        values = build_pareto(di, settings)
+        plot_pareto(f'./figures/{name}.pcurve.png', values)
+
+        for vi in values:
+            tree = vi['tree']
+            beta = vi['beta']
+            tname = f"./tree_pngs/{name}_{beta:.2}.tree.png"
+            plot_tree(tname, tree, title=f"{name} - {beta:.2}")
+        
+
 
 
 

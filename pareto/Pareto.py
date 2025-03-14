@@ -6,7 +6,7 @@ from pareto.pareto_objective import pareto_objective
 from uuid import uuid4
 from pareto.log import getLogger 
 
-logging = getLogger('paretoLogger')
+
 
 class Pareto:
     """
@@ -39,6 +39,7 @@ class Pareto:
         self.beta = beta
         self.grid_width = 2 * n_segments  * segment_length
         self.grid_height = self.grid_width
+        self.logging = getLogger(f'./logs/{self.name}.pareto.log')
         self.log_params()
 
         self.grid = get_grid(self.grid_width, self.grid_height, unit_length)
@@ -74,14 +75,14 @@ class Pareto:
     def log_params(self):
         def l(var): 
             val = getattr(self,  var)
-            logging.info(f"{var}: {val}")
+            self.logging.info(f"{var}: {val}")
         l("name") 
         l("beta")
         l("segment_length") 
         l("n_segments")
         l("radius")
         l("unit_length")
-        logging.info("---------------")
+        self.logging.info("---------------")
         return self
         
     def build_optimal_structure(self):
@@ -173,16 +174,16 @@ class Pareto:
             grid = grids[best_index]
             
             if not grid_is_valid(grid):
-                logging.error(f"Invalid grid: {grid}")
+                self.logging.error(f"Invalid grid: {grid}")
                 raise Exception('Cannot set grid. Invalid')
             
-            logging.info(f"Loop for i in n_segments: i={i}")
-            logging.info(f"best_index: {best_index}")
-            logging.info(f"len(tree): {tree.number_of_nodes()}")
-            logging.info(f"coord({prev[0]}, {prev[1]})")
-            logging.info(f"coverage: {best_pval['coverage']}")
-            logging.info(f"transport: {best_pval['transport']}")
-            logging.info(f"")
+            self.logging.info(f"Loop for i in n_segments: i={i}")
+            self.logging.info(f"best_index: {best_index}")
+            self.logging.info(f"len(tree): {tree.number_of_nodes()}")
+            self.logging.info(f"coord({prev[0]}, {prev[1]})")
+            self.logging.info(f"coverage: {best_pval['coverage']}")
+            self.logging.info(f"transport: {best_pval['transport']}")
+            self.logging.info(f"")
 
         return tree, self.grid, best_pval
 

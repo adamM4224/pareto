@@ -1,9 +1,9 @@
 
 def get_data():
     return [
-        {'name': 'A', 'length': 100, 'n_segments': 20},
-        {'name': 'B', 'length': 200, 'n_segments': 30},
-        {'name': 'C', 'length': 250, 'n_segments': 25}
+        {'name': 'dataA', 'length': 100, 'n_segments': 20},
+        {'name': 'dataB', 'length': 200, 'n_segments': 30},
+        {'name': 'dataC', 'length': 250, 'n_segments': 25}
     ]
 
 # replace this when ready

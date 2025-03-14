@@ -49,6 +49,6 @@ def transport(tree, grid):
         if not target:
             print('returning early for not finding a node with the id, but this should not happen')
 
-        total_distance += path_distance(tree, root, target)
+        total_distance += len(nutrients_by_id[segment_group]) * path_distance(tree, root, target)
 
     return total_distance

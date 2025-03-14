@@ -9,7 +9,7 @@ import math
 from pareto.log import getLogger 
 
 
-logging = getLogger('gridLogger')
+
 
 def get_candidates(point, radius, unit_length, grid_width, grid_height):
     """
