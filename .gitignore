@@ -85,11 +85,11 @@ venv.bak/
 data/*
 !data/.gitkeep
 
-figures/*
-!figures/.gitkeep
+# figures/*
+# !figures/.gitkeep
 
-tree_pngs/*
-!tree_pngs/.gitkeep
+# tree_pngs/*
+# !tree_pngs/.gitkeep
 
 logs/*
 !logs/.gitkeep
