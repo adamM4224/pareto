@@ -85,6 +85,9 @@ class Pareto:
         self.logging.info("---------------")
         return self
         
+
+    
+
     def build_optimal_structure(self):
         """"
         Runs the algorithm. Builds the tree, calls the objective functions,

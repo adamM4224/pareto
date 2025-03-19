@@ -55,6 +55,7 @@ def get_candidates(point, radius, unit_length, grid_width, grid_height):
 
 
 
+
 def coverage(tree, grid, radius, unit_length, grid_width, grid_height):
     """
     Coverage needs to return the number of nutrients. 
